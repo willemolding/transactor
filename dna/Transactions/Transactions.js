@@ -276,3 +276,7 @@ function GetUserProfile() {
     pub: App.Key.Hash
   }
 }
+
+function ProofOfDepositRead() {
+    return "unimplemented";
+}

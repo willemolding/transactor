@@ -7,7 +7,7 @@
             "Input": {
                 "amount": 52.9,
                 "description": "Sending 52",
-                "role": "buyer",
+                "role": "spender",
                 "who": "%agent0%"
             },
             "Output": "%h0%",
@@ -29,7 +29,7 @@
             "Output": {
                 "amount": 52.9,
                 "description": "Sending 52",
-                "from": "%agent%",
+                "from": "%key%",
                 "to": "%agent0%"
             },
             "Err": "",
@@ -73,7 +73,8 @@
                 "deposit": "%h1%",
                 "transaction": "%h0%"
             },
-            "Output": {
+            "Output":"unimplemented",
+            "OutputWhenImplement": {
                 "amount": 520,
                 "description": "Credit limit increase",
                 "from": "%agent%",

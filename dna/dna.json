@@ -49,6 +49,11 @@
                     "Exposure": "public"
                 },
                 {
+                    "Name": "ProofOfDepositRead",
+                    "CallingType": "json",
+                    "Exposure": "public"
+                },
+                {
                     "Name": "GetBalance",
                     "CallingType": "json",
                     "Exposure": "public"
