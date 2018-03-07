@@ -6,7 +6,9 @@
 **Asset backed mutual-credit currency built on holochain**
 Prototype of mutual-credit currency with reserve accounts and pre-authorization.
 ## Sequence Diagram
+
 <img src="sequence.svg" width="80%" />
+
 [Link to HackMD svg source](https://hackmd.io/MX1hgdusQbedFIX9s4PPSw)
 
 ## Installation
