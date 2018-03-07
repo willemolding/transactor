@@ -7,31 +7,7 @@
 Prototype of mutual-credit currency with reserve accounts and pre-authorization.
 ## Sequence Diagram
 
-```mermaid
-sequenceDiagram
-    participant Spender
-    participant DHT
-    participant Receiver
-
-    Receiver->>Receiver: commit('preauthInvoice', params)
-    Receiver->>DHT: commit(link on Spender to invoice)
-    DHT->>Receiver: hash of committed link
-    Spender-->>DHT: getLinks(me, 'invoice')
-    DHT-->>Spender: invoices
-
-    loop Pay Invoices
-        Spender-->>Spender: createTransaction(params)
-        Spender-->>Receiver: Send(PotentialTX)
-        Receiver-->>Receiver: CompleteTX by adding HeaderHash
-        Receiver-->>Spender: Complete-TX-Approval-Response
-        Spender->>Spender: commit(tx)
-        Spender-->>Receiver: signed header
-        Receiver->>Receiver: commit(tx)
-        Spender->>DHT: TX & headers
-        Receiver->>DHT: TX & headers
-    end
-
-```
+<img src="sequence.svg">
 
 ## Installation
 
