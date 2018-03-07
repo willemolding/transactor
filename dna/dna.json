@@ -3,70 +3,73 @@
     "UUID": "a6e66c32-69db-429c-9352-c28b8fdfb9e5",
     "Name": "transactor",
     "Properties": {
-        "description": "Mutual credit system for Scouter",
-        "language": "en"
+      "description": "Holochain implementation of a mutual credit currency",
+      "language": "en",
+      "progenitorHash":"QmQXSJoGkwdF2R7Xgc5cJXhKoRRdUKPHLLtTu3VqfGdqoV",
+      "progenitorIdentity":"the progenitor",
+      "creditLimit":"500"
+    },
+    "Progenitor": {
+        "Identity": "the progentior",
+        "PubKey": [8, 1, 18, 32, 193, 43, 31, 148, 23, 249, 163, 154, 128, 25, 237, 167, 253, 63, 214, 220, 206, 131, 217, 74, 168, 30, 215, 237, 231, 160, 69, 89, 48, 17, 104, 210]
     },
     "PropertiesSchemaFile": "properties_schema.json",
     "BasedOn": {
         "H": null
     },
     "Zomes": [
-        {
-            "Name": "Transactions",
-            "Description": "Execution and validation of transactions",
-            "CodeFile": "Transactions.js",
-            "Entries": [
-                {
-                    "Name": "Transaction",
-                    "DataFormat": "json",
-                    "Schema": "",
-                    "SchemaFile": "Transaction.json",
-                    "Sharing": "public"
-                },
-                {
-                    "Name": "ProofOfDeposit",
-                    "DataFormat": "json",
-                    "Schema": "",
-                    "SchemaFile": "ProofOfDeposit.json",
-                    "Sharing": "public"
-                }
-            ],
-            "RibosomeType": "js",
-            "Functions": [
-                {
-                    "Name": "TransactionCreate",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "TransactionRead",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "ProofOfDepositCreate",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "ProofOfDepositRead",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "GetBalance",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                },
-                {
-                    "Name": "GetUserProfile",
-                    "CallingType": "json",
-                    "Exposure": "public"
-                }
-            ],
-            "BridgeFuncs": null,
-            "BridgeTo": ""
-        }
+      {
+        "Name": "transactions",
+        "Description": "Execution and validation of mutual credit transactions",
+        "Config":{
+          "ErrorHandling":"returnErrorValue"
+        },
+        "CodeFile": "transactions.js",
+        "Entries": [
+            {
+                "Name": "transaction",
+                "DataFormat": "json",
+                "Schema": "",
+                "SchemaFile": "transaction.json",
+                "Sharing": "public"
+            },
+            {
+                "Name": "preauthInvoice",
+                "DataFormat": "json",
+                "Schema": "",
+                "SchemaFile": "preauthInvoice.json",
+                "Sharing": "public"
+            }
+        ],
+        "RibosomeType": "js",
+        "Functions": [
+            {
+                "Name": "transactionCreate",
+                "CallingType": "json",
+                "Exposure": "public"
+            },
+            {
+                "Name": "transactionRead",
+                "CallingType": "json",
+                "Exposure": "public"
+            },
+            {
+                "Name": "getBalance",
+                "CallingType": "json",
+                "Exposure": "public"
+            },
+            {
+                "Name": "preauthCreate",
+                "CallingType": "json",
+                "Exposure": "public"
+            },
+            {
+                "Name": "preauthCancel",
+                "CallingType": "json",
+                "Exposure": "public"
+            }
+        ]
+    }
     ],
     "RequiresVersion": 0,
     "DHTConfig": {

@@ -1,0 +1,29 @@
+{
+  "title": "Preauth Invoice Schema",
+  "type": "object",
+  "properties": {
+    "description": {
+      "type": "string"
+    },
+    "spender": {
+      "type": "string"
+    },
+    "amount": {
+      "type": "number"
+    },
+    "currency": {
+      "type": "string",
+      "default": "AUD"
+    },
+    "cancellationDate": {
+      "type": "date"
+    },
+    "":{
+
+    },
+    "attachedInvoice": {
+      "type": "object"
+    }
+  },
+  "required": ["amount", "spender"]
+}

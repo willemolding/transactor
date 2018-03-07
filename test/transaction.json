@@ -1,101 +1,123 @@
 {
-    "Tests": [
-        {
-            "Convey": "Create new transaction",
-            "Zome": "Transactions",
-            "FnName": "TransactionCreate",
-            "Input": {
-                "amount": 52.9,
-                "description": "Sending 52",
-                "role": "spender",
-                "who": "%agent0%"
-            },
-            "Output": "%h0%",
-            "Err": "",
-            "Regexp": "",
-            "Time": 0,
-            "Wait": 0,
-            "Exposure": "public",
-            "Raw": false,
-            "Repeat": 0
-        },
-        {
-            "Convey": "Read transaction",
-            "Zome": "Transactions",
-            "FnName": "TransactionRead",
-            "Input": {
-                "transaction": "%h0%"
-            },
-            "Output": {
-                "amount": 52.9,
-                "description": "Sending 52",
-                "from": "%key%",
-                "to": "%agent0%"
-            },
-            "Err": "",
-            "Regexp": "",
-            "Time": 0,
-            "Wait": 0,
-            "Exposure": "public",
-            "Raw": false,
-            "Repeat": 0
-        },
-        {
-            "Convey": "Create proof of deposit record",
-            "Zome": "Transactions",
-            "FnName": "ProofOfDepositCreate",
-            "Input": {
-                "amount": 52,
-                "currency": "EUR",
-                "depositor": "%agent0%",
-                "proof": {
-                    "id": "xxx"
-                },
-                "rateHash": "123"
-            },
-            "Output": {
-                "deposit": "%h1%",
-                "transaction": "%h0%"
-            },
-            "Err": "",
-            "Regexp": "",
-            "Time": 0,
-            "Wait": 0,
-            "Exposure": "public",
-            "Raw": false,
-            "Repeat": 0
-        },
-        {
-            "Convey": "Read of deposit record",
-            "Zome": "Transactions",
-            "FnName": "ProofOfDepositRead",
-            "Input": {
-                "deposit": "%h1%",
-                "transaction": "%h0%"
-            },
-            "Output":"unimplemented",
-            "OutputWhenImplement": {
-                "amount": 520,
-                "description": "Credit limit increase",
-                "from": "%agent%",
-                "to": "%agent0%"
-            },
-            "Err": "",
-            "Regexp": "",
-            "Time": 0,
-            "Wait": 0,
-            "Exposure": "public",
-            "Raw": false,
-            "Repeat": 0
-        }
-    ],
-    "Identity": "superbosstoken",
-    "Fixtures": {
-        "Agents": [
-            {
-                "Hash": "QmVGtdTZdTFaLsaj2RwdVG8jcjNNcp1DE914DKZ2kHmXHw",
-                "Identity": "some agent"
-            }
-        ]
+  "Identity": "The Progenitor",
+  "Tests": [
+    {
+      "Convey": "We should start with a zero balance",
+      "Zome": "transactions",
+      "FnName": "getBalance",
+      "Output": 0
+    },
+    {
+      "Convey": "Create a new transaction where we spend 52 with 'ACME Inc.'",
+      "Zome": "transactions",
+      "FnName": "transactionCreate",
+      "Input": {
+        "amount": 52,
+        "description": "Sending 52",
+        "role": "spender",
+        "who": "%agent0%"
+      },
+      "Output": "%h%",
+      "Exposure": "public"
+    },
+    {
+      "Convey": "Check that the transaction shows we spent 52 with 'ACME Inc.'",
+      "Zome": "transactions",
+      "FnName": "transactionRead",
+      "Input": {
+        "transaction": "%h%"
+      },
+      "Output": {
+        "amount": 52,
+        "description": "Sending 52",
+        "from": "%key%",
+        "to": "%agent0%"
+      },
+      "Exposure": "public"
+    },
+    {
+      "Convey": "The Progenitor should now have a non-zero balance of -52",
+      "Zome": "transactions",
+      "FnName": "getBalance",
+      "Output": -52
+    },
+    {
+      "Convey": "If The Progenitor tries to spend more than the credit limit, the transaction will fail",
+      "Zome": "transactions",
+      "FnName": "transactionCreate",
+      "Input": {
+        "amount": 100000,
+        "description": "Spending more than my credit limit",
+        "role": "spender",
+        "who": "%agent0%"
+      },
+      "Output": {
+        "message": "Validation Failed",
+        "name": "HolochainError"
+      },
+      "Exposure": "public"
+    },
+    {
+      "Convey": "Create a pre-authorization for invoice",
+      "Zome": "transactions",
+      "FnName": "preauthCreate",
+      "Input": {
+        "amount": 100,
+        "spender": "%agent0%"
+      },
+      "Output": "%h%",
+      "Exposure": "public"
+    },
+    {
+      "Convey": "Preauth should decrease the balance",
+      "Zome": "transactions",
+      "FnName": "getBalance",
+      "Output": -152
+    },
+    {
+      "Convey": "Cancel Preauth on unknown preauth should fail",
+      "Zome": "transactions",
+      "FnName": "preauthCancel",
+      "Input": "QmVGtdTZdTFaLsaj2RwdVG8jcjNNcp1DE914DKZ2kHmXHa",
+      "Output": {
+        "message": "hash not found",
+        "name": "HolochainError"
+      }
+    },
+    {
+      "Convey": "Cancel Preauth on uncomplete proposal should fail",
+      "Zome": "transactions",
+      "FnName": "preauthCancel",
+      "Input": {
+        "%result%": 7
+      },
+      "Output": {
+        "message": "Validation Failed",
+        "name": "HolochainError"
+      }
+    },
+    {
+      "Convey": "Cancel Preauth on failed proposal should succeed",
+      "Zome": "transactions",
+      "FnName": "preauthCancel",
+      "Input": {
+        "%result%": 7
+      },
+      "Output": "%h0%"
+    },
+    {
+      "Convey": "and balance should be restored",
+      "Zome": "transactions",
+      "FnName": "getBalance",
+      "Output": -52
     }
+  ],
+  "Fixtures": {
+    "Agents": [
+      {
+        "Hash": "QmbJArHSARzahwuPPff72oCx2hqZTTdbKXN3DpH3LiuzUo",
+        "Identity": "ACME Inc."
+      }
+    ]
+  }
 }
