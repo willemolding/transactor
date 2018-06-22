@@ -16,7 +16,7 @@
       "default": "AUD"
     },
     "cancellationDate": {
-      "type": "date"
+      "type": "string"
     },
     "":{
 
